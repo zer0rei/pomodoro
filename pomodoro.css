@@ -1,0 +1,62 @@
+@import url(https://fonts.googleapis.com/css?family=Righteous);
+
+body {
+	background-color: #FF282F;
+}
+
+#pomodoro {
+	width: 28em;
+	height: 25em;
+	margin: 0 auto;
+	margin-top: 10%;
+}
+
+h1 {
+	font-family: 'Righteous', cursive, sans-serif;
+	margin: 0;
+	padding: 0;
+	color: white;
+	font-size: 3em;
+}
+
+#left-title {
+	display: inline;
+	position: relative;
+	top: 4.3em;
+	left: -0.2em;
+	float: left;
+}
+
+#right-title {
+	float: left;
+	position: relative;
+	top: 4.3em;
+	left: 0.2em;
+}
+
+#tomato {
+	float: left;
+}
+
+#tomato img {
+	position: relative;
+	top: 2.3em;
+	left: 2.7em;
+}
+
+#ring {
+	height: 15em;
+	width: 15em;
+	border: 1.5em solid white;
+	border-radius: 50%;	
+}
+
+@media screen and (max-width: 767px) {
+	#pomodoro {
+		width: 15em;
+	}
+
+	#tomato {
+		float: none;
+	}
+}
