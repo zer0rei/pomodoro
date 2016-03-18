@@ -114,14 +114,24 @@ $(document).ready(function() {
 	var timer;
 	var workDuration = 25 * 60;
 	var breakDuration = 5 * 60;
-
+	var functionCalledOnce = false;
 	// Change timer duration
 	function setSettingsScreen() {
-
 		// Set settings screen
-		$("#bottomIcon").html('<button id="reset"><span class="glyphicon glyphicon-play"></button>');
 		ring.hide();
 		$("#settings").show();
+		$("#bottomIcon").html('<button id="reset"><span class="glyphicon glyphicon-play"></button>');
+
+		// Reset button
+		$("#reset").click(function() {
+			$("#settings").hide();
+			ring.show();
+			workTimer();
+			functionCalledOnce = true;
+		});
+
+		if (functionCalledOnce)
+			return;
 
 		// Change and print the durations
 
@@ -193,12 +203,6 @@ $(document).ready(function() {
 			printDuration(breakDuration, $("#breakTime"));
 		});
 
-		// Reset button
-		$("#reset").click(function() {
-			$("#settings").hide();
-			ring.show();
-			workTimer();
-		});
 	}
 
 	// Start the work countdown
@@ -213,7 +217,7 @@ $(document).ready(function() {
 	}
 
 	// Event Buttons
-	$("#cog").click(setSettingsScreen);
+	$("#tomato").on('click', '#cog', setSettingsScreen);
 
 	$("#start").click(function() {
 		shouldBlink = false;
@@ -234,8 +238,6 @@ $(document).ready(function() {
 			timer.restart();
 			timer.go();
 		});
-
-		$("#cog").click(setSettingsScreen);
 	});
 
 });
