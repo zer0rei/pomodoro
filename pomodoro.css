@@ -18,6 +18,10 @@ h1 {
 	font-size: 3em;
 }
 
+#title {
+	display: none;
+}
+
 #left-title {
 	display: inline;
 	position: relative;
@@ -63,12 +67,20 @@ h1 {
 	margin: 0.2em 0.4em;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 479px) {
 	#pomodoro {
 		width: 15em;
 	}
 
 	#tomato {
 		float: none;
+	}
+
+	#title {
+		display: inline;
+	}
+
+	#left-title, #right-title {
+		display: none;
 	}
 }
