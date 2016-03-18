@@ -122,8 +122,6 @@ $(document).ready(function() {
 		$("#bottomIcon").html('<button id="reset"><span class="glyphicon glyphicon-play"></button>');
 		ring.hide();
 		$("#settings").show();
-		$("#workTime").html(workDuration / 60);
-		$("#breakTime").html(breakDuration / 60);
 
 		// Change and print the durations
 
@@ -169,6 +167,12 @@ $(document).ready(function() {
 				display.html(minutes);
 		}
 
+		// Update durations
+		// Default
+		printDuration(workDuration, $("#workTimer"));
+		printDuration(breakDuration, $("#breakTimer"));
+
+		// After buttons pressed
 		$("#plusWork").click(function() {
 			workDuration = updateDuration(workDuration, "plus");
 			printDuration(workDuration, $("#workTime"));
