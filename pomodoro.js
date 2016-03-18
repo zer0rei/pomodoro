@@ -169,8 +169,8 @@ $(document).ready(function() {
 
 		// Update durations
 		// Default
-		printDuration(workDuration, $("#workTimer"));
-		printDuration(breakDuration, $("#breakTimer"));
+		printDuration(workDuration, $("#workTime"));
+		printDuration(breakDuration, $("#breakTime"));
 
 		// After buttons pressed
 		$("#plusWork").click(function() {
