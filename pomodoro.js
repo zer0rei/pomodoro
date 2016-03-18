@@ -22,7 +22,7 @@ function CountDownTimer(duration) {
 		if (this.running)
 			return;
 		this.running = true;
-		var seconds, minutes,
+		var seconds, minutes, hours,
 			elapsed = this.duration + 1,
 			that = this;
 
@@ -57,13 +57,25 @@ function CountDownTimer(duration) {
 				finishAudio.play();
 			}
 			else if (!that.stopped) {
-				minutes = (elapsed / 60) | 0;
+				hours = (elapsed / 3600) | 0;
+				minutes = ((elapsed % 3600) / 60) | 0;
 				seconds = (elapsed % 60) | 0;
 
+				// Pad with 0 if single digit
 				minutes = ((minutes < 10) ? "0" + minutes : minutes);
 				seconds = ((seconds < 10) ? "0" + seconds : seconds);
 
-				display.html('<span id="timer">' + minutes + ":" + seconds + '</span>');
+				if (hours)
+					display.html('<button id="timer">'+ hours + ":" + minutes + ":" + seconds + '</button>');
+				else
+					display.html('<button id="timer">' + minutes + ":" + seconds + '</button>');
+
+				// Work/Break notification
+				if (fnct.name === "breakTimer")
+					$("#bottomIcon").html("W");
+				else
+					$("#bottomIcon").html("B");
+
 			}
 
 			// Run fnct when finished (at 00:00)
@@ -72,6 +84,7 @@ function CountDownTimer(duration) {
 			}
 
 		}());
+
 	};
 
 	this.stop = function() {
@@ -92,7 +105,7 @@ $(document).ready(function() {
 	$("#pomodoro").css("margin-top", ($(window).height() - $("#pomodoro").height()) / 2);
 	// Ring paragraph layout
 	var ring = $("#ring p");
-	ring.css("margin-top", ($("#ring").height() - ring.height()) / 2);
+	ring.css("top", ($("#ring").height() - ring.height()) / 2);
 
 	// Blink start button
 	blink($("#start"));
@@ -101,6 +114,88 @@ $(document).ready(function() {
 	var timer;
 	var workDuration = 25 * 60;
 	var breakDuration = 5 * 60;
+
+	// Change timer duration
+	function setSettingsScreen() {
+
+		// Set settings screen
+		$("#bottomIcon").html('<button id="reset"><span class="glyphicon glyphicon-play"></button>');
+		ring.hide();
+		$("#settings").show();
+		$("#workTime").html(workDuration / 60);
+		$("#breakTime").html(breakDuration / 60);
+
+		// Change and print the durations
+
+		// Update duration using operator: (plus/minus)
+		function updateDuration(duration, operator) {
+			var minutes = (duration / 60) | 0;
+			if (operator === "plus") {
+				if (minutes >= 1 && minutes < 10)
+					minutes++;
+				else if (minutes >= 10 && minutes < 60)
+					minutes += 5;
+				else if (minutes >= 60 && minutes < 180)
+					minutes += 15;
+				else if (minutes >= 180 && minutes < 600)
+					minutes += 30;
+			}
+			else if (operator === "minus") {
+				if (minutes > 1 && minutes <= 10)
+					minutes--;
+				else if (minutes > 10 && minutes <= 60)
+					minutes -= 5;
+				else if (minutes > 60 && minutes <= 180)
+					minutes -= 15;
+				else if (minutes > 180)
+					minutes -= 30;
+			}
+
+			// Return minutes in seconds
+			return minutes * 60;
+		}
+
+		// Print duration to display in (hours:minutes)
+		function printDuration(duration, display) {
+			var minutes = (duration / 60) | 0;
+			var hours;
+			if (minutes >= 60) {
+				hours = (minutes / 60) | 0;
+				minutes = (minutes % 60) | 0;
+				minutes = ((minutes < 10) ? "0" + minutes : minutes);
+				display.html(hours + ":" + minutes);
+			}
+			else
+				display.html(minutes);
+		}
+
+		$("#plusWork").click(function() {
+			workDuration = updateDuration(workDuration, "plus");
+			printDuration(workDuration, $("#workTime"));
+		});
+
+		$("#minusWork").click(function() {
+			workDuration = updateDuration(workDuration, "minus");
+			printDuration(workDuration, $("#workTime"));
+		});
+
+		$("#plusBreak").click(function() {
+			breakDuration = updateDuration(breakDuration, "plus");
+			printDuration(breakDuration, $("#breakTime"));
+		});
+
+		$("#minusBreak").click(function() {
+			breakDuration = updateDuration(breakDuration, "minus");
+			printDuration(breakDuration, $("#breakTime"));
+		});
+
+		// Reset button
+		$("#reset").click(function() {
+			$("#settings").hide();
+			ring.show();
+			workTimer();
+		});
+	}
 
 	// Start the work countdown
 	function workTimer() {
@@ -114,6 +209,8 @@ $(document).ready(function() {
 	}
 
 	// Event Buttons
+	$("#cog").click(setSettingsScreen);
+
 	$("#start").click(function() {
 		shouldBlink = false;
 		setTimeout(workTimer, 100);
@@ -121,8 +218,9 @@ $(document).ready(function() {
 
 	ring.on('click', '#timer', function() {
 		timer.stop();
-		ring.html('<span id="continue" class="glyphicon glyphicon-play"></span>');
-		ring.append('<span id="restart" class="glyphicon glyphicon-repeat"></span>');
+		ring.html('<button id="continue"><span class="glyphicon glyphicon-play"></span></button>');
+		ring.append('<button id="restart"><span class="glyphicon glyphicon-repeat"></span></button>');
+		$("#bottomIcon").html('<button id="cog"><span class="glyphicon glyphicon-cog"></button>');
 
 		$("#continue").click(function() {
 			timer.go();
@@ -132,6 +230,8 @@ $(document).ready(function() {
 			timer.restart();
 			timer.go();
 		});
+
+		$("#cog").click(setSettingsScreen);
 	});
 
 });
