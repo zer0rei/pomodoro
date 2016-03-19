@@ -101,6 +101,11 @@ function CountDownTimer(duration) {
 }
 
 $(document).ready(function() {
+	// Remove the 300ms delay in mobile
+	$(function() {
+		FastClick.attach(document.body);
+	});
+
 	// Layout
 	$("#pomodoro").css("margin-top", ($(window).height() - $("#pomodoro").height()) / 2);
 	// Ring paragraph layout
