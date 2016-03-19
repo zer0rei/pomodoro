@@ -105,7 +105,10 @@ $(document).ready(function() {
 	});
 
 	// Layout
-	$("#pomodoro").css("margin-top", ($(window).height() - $("#pomodoro").height()) / 2);
+	var pomodoroMarginTop = ($(window).height() - $("#pomodoro").height()) / 2;
+	if (pomodoroMarginTop > 0)
+		$("#pomodoro").css("margin-top", pomodoroMarginTop);
+
 	// Ring paragraph layout
 	var ring = $("#ring p");
 	ring.css("top", ($("#ring").height() - ring.height()) / 2);
