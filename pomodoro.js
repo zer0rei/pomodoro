@@ -2,12 +2,10 @@
 var finishAudio = new Audio('includes/sounds/sound-finished-task.mp3');
 
 // Blinking
-var shouldBlink = true;
 function blink(obj) {
-	if (shouldBlink)
-		obj.delay(300).fadeOut(600).fadeIn(500, function() {
-			blink(obj);
-		});
+	obj.delay(300).fadeOut(600).fadeIn(500, function() {
+		blink(obj);
+	});
 }
 
 // Count down Timer
@@ -112,7 +110,7 @@ $(document).ready(function() {
 	var ring = $("#ring p");
 	ring.css("top", ($("#ring").height() - ring.height()) / 2);
 
-	// Blink start button
+	// Blink start button and credit
 	blink($("#start"));
 
 	// Pomodoro start
@@ -225,7 +223,6 @@ $(document).ready(function() {
 	$("#tomato").on('click', '#cog', setSettingsScreen);
 
 	$("#start").click(function() {
-		shouldBlink = false;
 		setTimeout(workTimer, 100);
 	});
 
