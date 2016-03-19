@@ -1,3 +1,7 @@
+// // // // // // // // // //
+// POMODORO TIMER (by HE)  //
+// // // // // // // // // //
+
 // Beep sound when timer finishs
 var finishAudio = new Audio('includes/sounds/sound-finished-task.mp3');
 
@@ -184,11 +188,12 @@ $(document).ready(function() {
 		}
 
 		// Update durations
+
 		// Default
 		printDuration(workDuration, $("#workTime"));
 		printDuration(breakDuration, $("#breakTime"));
 
-		// After buttons pressed
+		// Click buttons to update timer duration
 		$("#plusWork").click(function() {
 			workDuration = updateDuration(workDuration, "plus");
 			printDuration(workDuration, $("#workTime"));
@@ -223,25 +228,38 @@ $(document).ready(function() {
 	}
 
 	// Event Buttons
-	$("#tomato").on('click', '#cog', setSettingsScreen);
 
+	// First click on "#cog"
+	$("#cog").click(setSettingsScreen);
+
+	// Start button
 	$("#start").click(function() {
 		setTimeout(workTimer, 100);
 	});
 
+	// Pause when clicking the timer
 	ring.on('click', '#timer', function() {
 		timer.stop();
+
+		// Settings button
+		$("#bottomIcon").html('<button id="cog"><span class="glyphicon glyphicon-cog"></button>');
+		// Click settings button
+		$("#tomato").on("click", "#cog", setSettingsScreen);
+
+		// Continue and Restart buttons
 		ring.html('<button id="continue"><span class="glyphicon glyphicon-play"></span></button>');
 		ring.append('<button id="restart"><span class="glyphicon glyphicon-repeat"></span></button>');
-		$("#bottomIcon").html('<button id="cog"><span class="glyphicon glyphicon-cog"></button>');
 
+		// Click continue and restart buttons
 		$("#continue").click(function() {
 			timer.go();
+			$("#tomato").off();
 		});
 
 		$("#restart").click(function() {
 			timer.restart();
 			timer.go();
+			$("#tomato").off();
 		});
 	});
 
