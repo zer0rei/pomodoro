@@ -137,4 +137,10 @@ h1 {
 	#left-title, #right-title {
 		display: none;
 	}
+
+	#credit {
+		font-size: 1em;
+		top: 1.2em;
+		left: 0;
+	}
 }
