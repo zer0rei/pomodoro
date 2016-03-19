@@ -111,7 +111,7 @@ h1 {
 
 #credit {
 	position: relative;
-	top: -2.5em;
+	top: -1.5em;
 	left: -0.55em;
 	font-size: 0.9em;
 	opacity: 0.9;
@@ -140,7 +140,6 @@ h1 {
 
 	#credit {
 		font-size: 1em;
-		top: 1.2em;
 		left: 0;
 	}
 }
