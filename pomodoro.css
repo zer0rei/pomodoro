@@ -96,7 +96,11 @@ h1 {
 	text-align: center;
 	color: #FF282F;
 	position: relative;
-	top: -1.3em;
+	top: -1.15em;
+}
+
+#bottomIcon button {
+	padding: 0;
 }
 
 .clear {
@@ -111,7 +115,7 @@ h1 {
 
 #credit {
 	position: relative;
-	top: -1.5em;
+	top: -1em;
 	left: -0.55em;
 	font-size: 0.9em;
 	opacity: 0.9;
