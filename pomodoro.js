@@ -109,13 +109,18 @@ $(document).ready(function() {
 	});
 
 	// Layout
-	var pomodoroMarginTop = ($(window).height() - $("#pomodoro").height()) / 2;
-	if (pomodoroMarginTop > 0)
-		$("#pomodoro").css("margin-top", pomodoroMarginTop);
-
-	// Ring paragraph layout
 	var ring = $("#ring p");
-	ring.css("top", ($("#ring").height() - ring.height()) / 2);
+
+	$(window).resize(function() {
+		var pomodoroMarginTop = ($(window).height() - $("#pomodoro").height()) / 2;
+		if (pomodoroMarginTop > 0)
+			$("#pomodoro").css("margin-top", pomodoroMarginTop);
+
+		// Ring paragraph layout
+		ring.css("top", ($("#ring").height() - ring.height()) / 2);
+	});
+
+	$(window).resize();
 
 	// Blink start button and credit
 	blink($("#start"));
