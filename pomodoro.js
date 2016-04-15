@@ -147,6 +147,10 @@ $(document).ready(function() {
 
 		// Reset button
 		$("#reset").click(function() {
+			// Preload the finished task sound
+			ion.sound.play("finished-task-sound", { volume: 0 });
+
+			// Reset settings
 			$("#settings").hide();
 			ring.show();
 			workTimer();
