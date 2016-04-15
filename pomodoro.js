@@ -2,10 +2,18 @@
 // POMODORO TIMER (by HE)  //
 // // // // // // // // // //
 
-// Beep sound when timer finishs
-var finishAudio = new Audio('includes/sounds/sound-finished-task.mp3');
+// Initiate a beep sound when timer finishes
+ion.sound({
+	sounds: [
+		{name: "finished-task-sound"}
+	],
 
-// Blinking
+	path: "includes/sounds/",
+	preload: true,
+	multiply: true
+});
+
+// Blink
 function blink(obj) {
 	obj.delay(300).fadeOut(600).fadeIn(500, function() {
 		blink(obj);
@@ -56,7 +64,7 @@ function CountDownTimer(duration) {
 				else
 					display.html('WORK');
 				// Play a beep
-				finishAudio.play();
+				ion.sound.play("finished-task-sound", { volume: 1 });
 			}
 			else if (!that.stopped) {
 				hours = (elapsed / 3600) | 0;
@@ -240,6 +248,9 @@ $(document).ready(function() {
 	// Start button
 	$("#start").click(function() {
 		setTimeout(workTimer, 100);
+
+		// Preload the finished task sound
+		ion.sound.play("finished-task-sound", { volume: 0 });
 	});
 
 	// Pause when clicking the timer
