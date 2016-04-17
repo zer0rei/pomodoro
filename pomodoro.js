@@ -210,28 +210,38 @@ $(document).ready(function() {
 		printDuration(workDuration, $("#workTime"));
 		printDuration(breakDuration, $("#breakTime"));
 
-		// Click buttons to update timer duration
-		$("#plusWork").click(function() {
-			workDuration = updateDuration(workDuration, "plus");
-			printDuration(workDuration, $("#workTime"));
-		});
+		var timeouts = {};
+		var intervals = {};
+		var durations = [workDuration, breakDuration];
 
-		$("#minusWork").click(function() {
-			workDuration = updateDuration(workDuration, "minus");
-			printDuration(workDuration, $("#workTime"));
-		});
+		// Press buttons to update timer duration
+		$("#plusWork, #minusWork, #plusBreak, #minusBreak").on("mousedown touchstart", function(e) {
+			if ((e.type === "mousedown" && e.which === 1) || (e.type === "touchstart" && e.originalEvent.touches.length === 1)) {
+				var that = this;
+				var stage = this.id.match(/work|break/i)[0].toLowerCase();
+				var operator = this.id.match(/plus|minus/i)[0];
+				var durationIndex = stage === "work" ? 0 : 1;
 
-		$("#plusBreak").click(function() {
-			breakDuration = updateDuration(breakDuration, "plus");
-			printDuration(breakDuration, $("#breakTime"));
-		});
+				// Update the duratioon
+				durations[durationIndex] = updateDuration(durations[durationIndex], operator);
+				printDuration(durations[durationIndex], $("#" + stage + "Time"));
+				timeouts[this.id] = setTimeout(function() {
+					intervals[that.id] = setInterval(function() {
+						durations[durationIndex] = updateDuration(durations[durationIndex], operator);
+						printDuration(durations[durationIndex], $("#" + stage + "Time"));
+					}, 100);
+				}, 300);
+				e.preventDefault();
 
-		$("#minusBreak").click(function() {
-			breakDuration = updateDuration(breakDuration, "minus");
-			printDuration(breakDuration, $("#breakTime"));
-		});
+				// Clear timeouts/intervals after the press
+				$(window).on("mouseup touchend", function(e) {
+					clearInterval(intervals[that.id]);
+					clearTimeout(timeouts[that.id]);
+				});
+			}
+		}); // <<< press +/- buttons event handler
 
-	}
+	} // <<< setSettingsScreen
 
 	// Start the work countdown
 	function workTimer() {
@@ -281,6 +291,6 @@ $(document).ready(function() {
 			timer.go();
 			$("#tomato").off();
 		});
-	});
+	}); // <<< ring click
 
-});
+}); // <<< ready
