@@ -212,24 +212,34 @@ $(document).ready(function() {
 
 		var timeouts = {};
 		var intervals = {};
-		var durations = [workDuration, breakDuration];
-
 		// Press buttons to update timer duration
 		$("#plusWork, #minusWork, #plusBreak, #minusBreak").on("mousedown touchstart", function(e) {
 			if ((e.type === "mousedown" && e.which === 1) || (e.type === "touchstart" && e.originalEvent.touches.length === 1)) {
 				var that = this;
 				var stage = this.id.match(/work|break/i)[0].toLowerCase();
 				var operator = this.id.match(/plus|minus/i)[0];
-				var durationIndex = stage === "work" ? 0 : 1;
+				var duration = stage === "work" ? workDuration : breakDuration;
 
-				// Update the duratioon
-				durations[durationIndex] = updateDuration(durations[durationIndex], operator);
-				printDuration(durations[durationIndex], $("#" + stage + "Time"));
+				updateDurationHandler = function() {
+					// Update local duratioon
+					duration = updateDuration(duration, operator);
+
+					// Update global duration
+					if (stage === "work")
+						workDuration = duration;
+					else
+						breakDuration = duration;
+
+					// Print duration
+					printDuration(duration, $("#" + stage + "Time"));
+				};
+
+				// Update duration once
+				updateDurationHandler();
+
+				// Set the interval
 				timeouts[this.id] = setTimeout(function() {
-					intervals[that.id] = setInterval(function() {
-						durations[durationIndex] = updateDuration(durations[durationIndex], operator);
-						printDuration(durations[durationIndex], $("#" + stage + "Time"));
-					}, 100);
+					intervals[that.id] = setInterval(updateDurationHandler, 100);
 				}, 300);
 				e.preventDefault();
 
