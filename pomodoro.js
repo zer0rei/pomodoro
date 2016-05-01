@@ -111,11 +111,6 @@ function CountDownTimer(duration) {
 }
 
 $(document).ready(function() {
-	// Remove the 300ms delay in mobile
-	$(function() {
-		FastClick.attach(document.body);
-	});
-
 	// Layout
 	var ring = $("#ring p");
 
